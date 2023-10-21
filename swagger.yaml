@@ -1,0 +1,502 @@
+swagger: '2.0'
+info:
+  title: Pharmacy Adherence Solution API
+  description: 'API to try to solve the problem of Non Adherence'
+  version: 1.0.0
+schemes:
+  - https
+basePath: /v1
+produces:
+  - application/json
+paths:
+  /lfauth:
+    get:
+      summary: The endpoint for the Natural Language Understanding API.
+      description: |
+        This API takes in an email, password, role, and action
+      tags:
+        - AUTH
+      operationId: verifyUser
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/LFAuthRequest'
+      responses:
+        '200':
+          description: A Chatbot response
+          schema:
+            $ref: '#/definitions/LFAuthResponse'
+        '403':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /lfchecktreatments:
+    get:
+      summary: The endpoint for the Natural Language Understanding API.
+      description: |
+        This API takes in an email, password, role, and action
+      tags:
+        - TREATMENT
+      operationId: checkTreatment
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/LFCheckTreatmentsRequest'
+      responses:
+        '200':
+          description: A Chatbot response
+          schema:
+            $ref: '#/definitions/LFCheckTreatmentsResponse'
+        '403':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /lfenablereminder:
+    post:
+      summary: The endpoint for the Natural Language Understanding API.
+      description: |
+        This API takes in an email, password, role, and action
+      tags:
+        - REMINDER
+      operationId: enableReminder
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/LFEnableReminderRequest'
+      responses:
+        '200':
+          description: A Chatbot response
+          schema:
+            $ref: '#/definitions/LFEnableReminderResponse'
+        '403':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /lfconstructreminder:
+    post:
+      summary: The endpoint for the Natural Language Understanding API.
+      description: |
+        This API takes in an email, password, role, and action
+      tags:
+        - REMINDER
+      operationId: constructReminder
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/LFConstructReminderRequest'
+      responses:
+        '200':
+          description: A Chatbot response
+          schema:
+            $ref: '#/definitions/LFConstructReminderResponse'
+        '403':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /lftreatmentplanupdate:
+    post:
+      summary: The endpoint for the Natural Language Understanding API.
+      description: |
+        This API takes in an email, password, role, and action
+      tags:
+        - TREATMENT
+      operationId: treatmentUpdate
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/LFTreatmentPlanUpdateRequest'
+      responses:
+        '200':
+          description: A Chatbot response
+          schema:
+            $ref: '#/definitions/LFTreatmentPlanUpdateResponse'
+        '403':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /lftreatmentplancreate:
+    post:
+      summary: The endpoint for the Natural Language Understanding API.
+      description: |
+        This API takes in an email, password, role, and action
+      tags:
+        - TREATMENT
+      operationId: treatmentPlanCreate
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/LFTreatmentPlanCreateRequest'
+      responses:
+        '200':
+          description: A Chatbot response
+          schema:
+            $ref: '#/definitions/LFTreatmentPlanCreateResponse'
+        '403':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    
+  /lfcheckformulary:
+    get:
+      summary: The endpoint for the Natural Language Understanding API.
+      description: |
+        This API takes in an email, password, role, and action
+      tags:
+        - INSURANCE
+      operationId: checkFormulary
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/LFCheckFormularyRequest'
+      responses:
+        '200':
+          description: A Chatbot response
+          schema:
+            $ref: '#/definitions/LFCheckFormularyResponse'
+        '403':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  
+  /lfgoodrx:
+    get:
+      summary: The endpoint for the Natural Language Understanding API.
+      description: |
+        This API takes in an email, password, role, and action
+      tags:
+        - INSURANCE
+      operationId: goodRX
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/LFGoodRXRequest'
+      responses:
+        '200':
+          description: A Chatbot response
+          schema:
+            $ref: '#/definitions/LFGoodRXResponse'
+        '403':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  
+  /lfsinglecare:
+    get:
+      summary: The endpoint for the Natural Language Understanding API.
+      description: |
+        This API takes in an email, password, role, and action
+      tags:
+        - INSURANCE
+      operationId: singlecare
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/LFSinglecareRequest'
+      responses:
+        '200':
+          description: A Chatbot response
+          schema:
+            $ref: '#/definitions/LFSinglecareResponse'
+        '403':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  
+  /lfwellrx:
+    get:
+      summary: The endpoint for the Natural Language Understanding API.
+      description: |
+        This API takes in an email, password, role, and action
+      tags:
+        - INSURANCE
+      operationId: wellRX
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/LFWellRXRequest'
+      responses:
+        '200':
+          description: A Chatbot response
+          schema:
+            $ref: '#/definitions/LFWellRXRequest'
+        '403':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  
+  
+definitions:
+  LFAuthRequest:
+    type: object
+    properties:
+      email:
+        type: string
+      password::
+        type: string
+      role:
+        type: string
+      action:
+        type: string
+        
+  LFAuthResponse:
+    type: object
+    properties:
+      user:
+        type: string
+  
+  LFEnableReminderRequest:
+    type: object
+    properties:
+      startDateTime:
+        type: string
+      patient:
+        type: object
+        items:
+        $ref: '#/definitions/Patient'
+
+  LFEnableReminderResponse:
+    type: object
+    properties:
+    
+        
+  LFCheckTreatmentsRequest:
+    type: object
+    properties:
+    
+  LFCheckTreatmentsResponse:
+    type: object
+     properties:
+  
+  
+  LFConstructReminderRequest:
+    type: object
+    properties:
+  
+  LFConstructReminderResponse:
+    type: object
+    properties: 
+    
+  LFTreatmentPlanUpdateRequest:
+    type: object
+    properties: 
+  
+  LFTreatmentPlanUpdateResponse:
+    type: object
+    properties: 
+    
+  LFTreatmentPlanCreateRequest:
+    type: object
+    properties: 
+  
+  
+  LFTreatmentPlanCreateResponse:
+    type: object
+    properties: 
+      
+
+  LFCheckFormularyRequest:
+    type: object
+    properties: 
+  
+  LFCheckFormularyResponse:
+    type: object
+    properties: 
+    
+  
+  LFGoodRXRequest:
+    type: object
+    properties: 
+  
+  LFGoodRXResponse:
+    type: object
+    properties: 
+  
+  LFSinglecareRequest:
+    type: object
+    properties: 
+  
+  LFSinglecareResponse:
+    type: object
+    properties: 
+  
+  LFWellRXRequest:
+    type: object
+    properties: 
+  
+  LFWellRXRequest:
+    type: object
+    properties: 
+   
+  TreatmentPlan:
+    type: object
+    properties:
+      
+      npi:
+        type: string
+  
+  Patient:
+    type: object
+    properties:
+      firstName: 
+          type: string
+      lastName: 
+        type: string
+      address:
+        type: string
+      dob:
+        type: string
+      insurance:
+        type:string
+      preferredLocation:
+        type: string
+      email:
+        type: string
+      doctorFirstName: 
+          type: string
+      doctorLastName: 
+        type: string
+      doctorOfficeAddress:
+        type: string
+      
+          
+  Doctor:
+    type: object
+    properties:
+      firstName: 
+          type: string
+      lastName: 
+        type: string
+      officeAddress:
+        type: string
+      npi:
+        type: string
+  
+        
+      
+      
+  Medicine:
+    type: object
+    properties:
+      name:
+          type: string
+      dosage:
+        type: string
+      quantity:
+        type: string
+      refills:
+        type: string
+        
+    
+  Schedule:
+    type: object
+    properties:
+      startDateTime:
+        type: string
+      quantity:
+        type: string
+      frequencyNumber:
+        type: string
+      frequencyType:
+        type: string
+      enddate:
+        type: string
+      additionalInstructions:
+        type: string
+      mostrecentReminderDateTime:
+        type: string
+      
+    
+      
+        
+        
+  
+        
+
+  Error:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
