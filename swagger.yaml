@@ -61,44 +61,22 @@ paths:
           schema:
             $ref: '#/definitions/LFEnableReminderResponse'
         '403':
-          description: Unauthorized
+          description: Unauthorized9
           schema:
             $ref: '#/definitions/Error'
         '500':
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
-  /lfgeneratereminderemail:
+  /lfgetactivemedicines:
     get:
-      summary: The endpoint for the Natural Language Understanding API.
-      description: |
-        This API takes in an email, password, role, and action
-      tags:
-        - REMINDER
-      operationId: generatereminderemail
-      produces:
-        - application/json
-      responses:
-        '200':
-          description: A Chatbot response
-          schema:
-            $ref: '#/definitions/LFGenerateReminderEmailRequest'
-        '403':
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/Error'
-        '500':
-          description: Unexpected error
-          schema:
-            $ref: '#/definitions/Error'
-  /lftreatmentplanupdate:
+      summary: This allows front end to grab all active medicines 
+  /lfcreatemedicine:
     post:
-      summary: The endpoint for the Natural Language Understanding API.
-      description: |
-        This API takes in an email, password, role, and action
+      summary:  This allows doctors to create an entry in the medicines table for a patient
       tags:
-        - TREATMENT
-      operationId: treatmentPlanUpdate
+        - MEDICINE
+      operationId: createMedicine
       produces:
         - application/json
       parameters:
@@ -106,12 +84,10 @@ paths:
           in: body
           required: true
           schema:
-            $ref: '#/definitions/LFTreatmentPlanUpdateRequest'
+            $ref: '#/definitions/LFCreateMedicineRequest'
       responses:
         '200':
-          description: A Chatbot response
-          schema:
-            $ref: '#/definitions/LFTreatmentPlanUpdateResponse'
+          description: scuccessully created the entry in the medicines table
         '403':
           description: Unauthorized
           schema:
@@ -120,36 +96,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
-  /lftreatmentplancreate:
-    post:
-      summary: The endpoint for the Natural Language Understanding API.
-      description: |
-        This API takes in an email, password, role, and action
-      tags:
-        - TREATMENT
-      operationId: treatmentPlanCreate
-      produces:
-        - application/json
-      parameters:
-        - name: body
-          in: body
-          required: true
-          schema:
-            $ref: '#/definitions/LFTreatmentPlanCreateRequest'
-      responses:
-        '200':
-          description: A Chatbot response
-          schema:
-            $ref: '#/definitions/LFTreatmentPlanCreateResponse'
-        '403':
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/Error'
-        '500':
-          description: Unexpected error
-          schema:
-            $ref: '#/definitions/Error'
-
+      
   /lfchat:
     post:
       summary: The endpoint for the Natural Language Understanding API.
@@ -230,8 +177,6 @@ paths:
       responses:
         '200':
           description: A Chatbot response
-          schema:
-            $ref: '#/definitions/LFCheckFormularyResponse'
         '403':
           description: Unauthorized
           schema:
@@ -351,11 +296,23 @@ definitions:
       user:
         type: string
   
+  LFCreateMedicineRequest:
+    type: object
+    properties:
+      pharmacy:
+        type: object
+        $ref: '#/definitions/Pharmacy'
+      medicine:
+        type: object
+        $ref: '#/definitions/Medicine'
+      
+      
   LFEnableReminderRequest:
     type: object
     properties:
-      Patient:
+      patient:
         type: object
+        $ref: '#/definitions/Patient'
 
 
   LFEnableReminderResponse:
@@ -394,11 +351,6 @@ definitions:
       messages:
         type: object
   
-  
-  LFGenerateReminderEmailRequest:
-    type: object
-  
-    
   LFTreatmentPlanUpdateRequest:
     type: object
   
@@ -437,6 +389,14 @@ definitions:
   
   LFWellRXResponse:
     type: object
+    
+  Pharmacy:
+    type: object
+    properties:
+      name:
+        type: string
+      location:
+        type: string
   
   Patient:
     type: object
