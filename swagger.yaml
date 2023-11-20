@@ -57,9 +57,7 @@ paths:
             $ref: '#/definitions/LFEnableReminderRequest'
       responses:
         '200':
-          description: A Chatbot response
-          schema:
-            $ref: '#/definitions/LFEnableReminderResponse'
+          description: successfully changed reminder status
         '403':
           description: Unauthorized9
           schema:
@@ -70,7 +68,29 @@ paths:
             $ref: '#/definitions/Error'
   /lfgetactivemedicines:
     get:
-      summary: This allows front end to grab all active medicines 
+      summary: This allows front end to grab all active medicines
+      tags:
+        - MEDICINE
+      operationId: activeMedicine
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/LFGetActiveMedicinesRequest'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/LFGetActiveMedicinesResponse'
+        '403':
+          description:
+            successfully grabbed active medicines for active user
+          schema:
+            $ref: '#/definitions/Error'
+  
   /lfcreatemedicine:
     post:
       summary:  This allows doctors to create an entry in the medicines table for a patient
@@ -87,7 +107,33 @@ paths:
             $ref: '#/definitions/LFCreateMedicineRequest'
       responses:
         '200':
-          description: scuccessully created the entry in the medicines table
+          description: successully created the entry in the medicines table
+        '403':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+            
+  /lfupdatemedicine:
+    post:
+      summary:  This allows doctors to update an entry in the medicine table
+      tags:
+        - MEDICINE
+      operationId: updateMedicine
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/LFUpdateMedicineRequest'
+      responses:
+        '200':
+          description: successully updated the entry in the medicines table
         '403':
           description: Unauthorized
           schema:
@@ -115,9 +161,7 @@ paths:
             $ref: '#/definitions/LFChatRequest'
       responses:
         '200':
-          description: A Chatbot response
-          schema:
-            $ref: '#/definitions/LFChatResponse'
+          description: OK
         '403':
           description: Unauthorized
           schema:
@@ -177,6 +221,8 @@ paths:
       responses:
         '200':
           description: A Chatbot response
+          schema:
+            $ref: '#/definitions/LFCheckFormularyResponse'
         '403':
           description: Unauthorized
           schema:
@@ -289,11 +335,10 @@ definitions:
         type: string
       action:
         type: string
-        
   LFAuthResponse:
     type: object
     properties:
-      user:
+      authMessage:
         type: string
   
   LFCreateMedicineRequest:
@@ -305,24 +350,29 @@ definitions:
       medicine:
         type: object
         $ref: '#/definitions/Medicine'
+  
+  LFUpdateMedicineRequest:
+    type: object
+    properties:
+      medicine:
+        type: object
+        $ref: '#/definitions/Medicine'
+  
       
       
   LFEnableReminderRequest:
     type: object
     properties:
-      patient:
+      medicine:
         type: object
-        $ref: '#/definitions/Patient'
+        $ref: '#/definitions/Medicine'
 
-
-  LFEnableReminderResponse:
-    type: object
-  
   LFChatRequest:
     type: object
     properties:
       doctor:
         type: object
+        $ref: '#/definitions/Doctor'
       requestType:
         type: string
       request:
@@ -330,9 +380,6 @@ definitions:
         properties:
           patient:
             $ref: '#/definitions/Patient'
-
-  LFChatResponse:
-    type: object
     
 
   LFGrabMessagesRequest:
@@ -340,36 +387,46 @@ definitions:
     properties:
       doctor:
         type: object
+        $ref: '#/definitions/Doctor'
       requestType:
         type: string
       patient:
         type: object
+        $ref: '#/definitions/Patient'
 
   LFGrabMessagesResponse:
+    type: array
+    items:
+      $ref: '#/definitions/Messages'
+        
+  LFGetActiveMedicinesRequest:
     type: object
     properties:
-      messages:
+      patient:
         type: object
+        $ref: '#/definitions/Patient'
+      
   
-  LFTreatmentPlanUpdateRequest:
+  LFGetActiveMedicinesResponse:
     type: object
-  
-  LFTreatmentPlanUpdateResponse:
-    type: object
-    
-  LFTreatmentPlanCreateRequest:
-    type: object
-  
-  
-  LFTreatmentPlanCreateResponse:
-    type: object
+    properties:
+      medicines:
+        type: array
+        items:
+          $ref: '#/definitions/Medicine'
       
 
   LFCheckFormularyRequest:
     type: object
+    properties:
+      medicine:
+        $ref: '#/definitions/Medicine'
   
   LFCheckFormularyResponse:
     type: object
+    properties:
+      covered:
+        type: string
     
   
   LFGoodRXRequest:
@@ -441,6 +498,12 @@ definitions:
   Medicine:
     type: object
     properties:
+      doctor:
+        type: object
+        $ref: '#/definitions/Doctor'
+      patient:
+        type: object
+        $ref: '#/definitions/Patient'
       name:
           type: string
       dosage:
@@ -451,6 +514,7 @@ definitions:
         type: string
       schedule:
         type: object
+        $ref: '#/definitions/Schedule'
         
     
   Schedule:
@@ -475,18 +539,22 @@ definitions:
     properties:
       message:
         type: object
+        $ref: '#/definitions/Message'
   
   Message:
     type: object
     properties:
       doctor:
         type: object
+        $ref: '#/definitions/Doctor'
       patient:
         type: object
+        $ref: '#/definitions/Patient'
       messageBody:
         type: string
       request:
         type: object
+        $ref: '#/definitions/Request'
   
   Request:
     type: object
