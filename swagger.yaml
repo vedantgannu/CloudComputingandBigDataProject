@@ -11,9 +11,9 @@ produces:
 paths:
   /lfauth:
     get:
-      summary: The endpoint for the Natural Language Understanding API.
+      summary: This is responsible for authenticating the user
       description: |
-        This API takes in an email, password, role, and action
+        This takes in a patient or doctor object
       tags:
         - AUTH
       operationId: verifyUser
@@ -38,12 +38,41 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
+  /lfcreateaccount:
+    post:
+      summary: This allows the frontend to create a new account for the user
+      description: |
+        This takes in a patient or doctor object
+      tags:
+        - AUTH
+      operationId: createUser
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/LFCreateUserRequest'
+      responses:
+        '200':
+          description: A Chatbot response
+          schema:
+            $ref: '#/definitions/LFCreateUserResponse'
+        '403':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
   
   /lfenablereminder:
     post:
-      summary: The endpoint for the Natural Language Understanding API.
+      summary: This is responsible for enabling a reminder for a medicine
       description: |
-        This API takes in an email, password, role, and action
+        This takes in a medicine object
       tags:
         - REMINDER
       operationId: enableReminder
@@ -145,9 +174,9 @@ paths:
       
   /lfchat:
     post:
-      summary: The endpoint for the Natural Language Understanding API.
+      summary: This is responsible for iniating a conversation with lex
       description: |
-        This API takes in an email, password, role, and action
+        This takes in a doctor or patient object as well as a requestType
       tags:
         - CHAT
       operationId: chat
@@ -173,9 +202,9 @@ paths:
     
   /lfgrabmessages:
     get:
-      summary: The endpoint for the Natural Language Understanding API.
+      summary: This is responsible for retrieving the messages of a doctor or patient
       description: |
-        This API takes in an email, password, role, and action
+        This takes in a doctor or patient object as well as the requestType
       tags:
         - CHAT
       operationId: grabmessages
@@ -204,9 +233,9 @@ paths:
 
   /lfcheckformulary:
     get:
-      summary: The endpoint for the Natural Language Understanding API.
+      summary: This is responsible for checking if a medicine is covered under an insurance
       description: |
-        This API takes in an email, password, role, and action
+        This takes in a medicine object
       tags:
         - INSURANCE
       operationId: checkFormulary
@@ -234,9 +263,9 @@ paths:
   
   /lfgoodrx:
     get:
-      summary: The endpoint for the Natural Language Understanding API.
+      summary: This is responsible for retrieving goodrx coupons
       description: |
-        This API takes in an email, password, role, and action
+        This takes in a medicine object
       tags:
         - INSURANCE
       operationId: goodRX
@@ -264,9 +293,9 @@ paths:
   
   /lfsinglecare:
     get:
-      summary: The endpoint for the Natural Language Understanding API.
+      summary: This is responsible for retrieving singlecare coupons
       description: |
-        This API takes in an email, password, role, and action
+        This takes in a medicine object
       tags:
         - INSURANCE
       operationId: singlecare
@@ -294,9 +323,9 @@ paths:
   
   /lfwellrx:
     get:
-      summary: The endpoint for the Natural Language Understanding API.
+      summary: This is responsible for retrieving wellrx coupons
       description: |
-        This API takes in an email, password, role, and action
+        This takes in a medicine object
       tags:
         - INSURANCE
       operationId: wellRX
@@ -327,10 +356,12 @@ definitions:
   LFAuthRequest:
     type: object
     properties:
-      email:
-        type: string
-      password::
-        type: string
+      patient:
+        type: object
+        $ref: '#/definitions/Patient'
+      doctor:
+        type: object
+        $ref: '#/definitions/Doctor'
       role:
         type: string
       action:
@@ -340,6 +371,26 @@ definitions:
     properties:
       authMessage:
         type: string
+        
+  LFCreateUserRequest:
+    type: object
+    properties:
+      patient:
+        type: object
+        $ref: '#/definitions/Patient'
+      doctor:
+        type: object
+        $ref: '#/definitions/Doctor'
+  
+  LFCreateUserResponse:
+    type: object
+    properties:
+      patient:
+        type: object
+        $ref: '#/definitions/Patient'
+      doctor:
+        type: object
+        $ref: '#/definitions/Doctor'
   
   LFCreateMedicineRequest:
     type: object
@@ -431,21 +482,62 @@ definitions:
   
   LFGoodRXRequest:
     type: object
+    $ref: '#/definitions/InsuranceRequest'
   
   LFGoodRXResponse:
     type: object
+    $ref: '#/definitions/InsuranceResponse'
+    
+    
   
   LFSinglecareRequest:
     type: object
+    $ref: '#/definitions/InsuranceRequest'
   
   LFSinglecareResponse:
     type: object
+    $ref: '#/definitions/InsuranceResponse'
   
   LFWellRXRequest:
     type: object
+    $ref: '#/definitions/InsuranceRequest'
   
   LFWellRXResponse:
     type: object
+    $ref: '#/definitions/InsuranceResponse'
+    
+  InsuranceRequest:
+    type: object
+    properties:
+      medicine:
+        type: object
+        $ref: '#/definitions/Medicine'
+        
+  InsuranceResponse:
+    type: object
+    properties:
+      pharmacies:
+        type: array
+        items:
+          $ref: '#/definitions/Pharmacy'
+      coupons:
+        type: array
+        items:
+          $ref: '#/definitions/Coupon'
+  
+  Coupon:
+    type: object
+    properties:
+      bin:
+        type: string
+      pcn:
+        type: string
+      group:
+        type: string
+      id:
+        type: string
+      price:
+        type: string
     
   Pharmacy:
     type: object
