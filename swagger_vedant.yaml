@@ -1,0 +1,205 @@
+swagger: '2.0'
+info:
+  title: The API for the Pharmacy APP
+  description: 'API to interact with the Pharmacy App Endpoints'
+  version: 1.0.0
+schemes:
+  - https
+basePath: /
+produces:
+  - application/json
+paths:
+  /lfcreatemedicine:
+    post:
+      summary: create treatment plan endpoint
+      tags:
+        - USERS
+      operationId: create treatment plan endpoint
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/createTreatmentPlanRequest'
+      responses:
+        '200':
+          description: Create treatment plan
+          schema:
+            $ref: '#/definitions/createTreatmentPlanFuncResponse'
+        '403':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /lfenablereminder:
+    post:
+      summary: Enable reminder for treatment plan
+      tags:
+        - USERS
+      operationId: Enable reminder for treatment plan
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/createEnableReminderRequest'
+      responses:
+        '200':
+          description: Enable reminder for treatment plan
+          schema:
+            $ref: '#/definitions/enableReminderFuncResponse'
+        '403':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /lfgetactivemedicines:
+    post:
+      summary: Get medicines and treatment plans
+      tags:
+        - USERS
+      operationId: Get medicines and treatment plans
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/getActiveMedicinesRequest'
+      responses:
+        '200':
+          description: Get medicines and treatments plan
+          schema:
+            $ref: '#/definitions/getActiveMedicinesResponse'
+        '403':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  # /lfupdatemedicines:
+  #   post:
+  #     summary: Update medicines and treatment plans
+  #     tags:
+  #       - USERS
+  #     operationId: Update medicines and treatment plans
+  #     produces:
+  #       - application/json
+  #     parameters:
+  #       - in: body
+  #         name: body
+  #         required: true
+  #         schema:
+  #           $ref: '#/definitions/getActiveMedicinesRequest'
+  #     responses:
+  #       '200':
+  #         description: Get medicines and treatments plan
+  #         schema:
+  #           $ref: '#/definitions/getActiveMedicinesResponse'
+  #       '403':
+  #         description: Unauthorized
+  #         schema:
+  #           $ref: '#/definitions/Error'
+  #       '500':
+  #         description: Unexpected error
+  #         schema:
+  #           $ref: '#/definitions/Error'
+definitions:
+  getActiveMedicinesRequest:
+    type: object
+    properties:
+      email:
+        type: string
+  createEnableReminderRequest:
+    type: object
+    properties:
+      email:
+        type: string
+      treatmentId:
+        type: integer
+      reminderState:
+        type: boolean
+        items:
+          $ref: '#/definitions/treatmentPlan'
+  # updateTreatmentPlanRequest:
+  #   type: object
+  #   properties:
+  #     doctorEmail:
+  #       type: string
+  #     patientEmail:
+  #       type: string
+  #     newTreatmentPlan:
+  #       type: array
+  #       items:
+  #         $ref: '#/definitions/treatmentPlan'
+  createTreatmentPlanRequest:
+    type: object
+    properties:
+      doctorEmail:
+        type: string
+      patientEmail:
+        type: string
+      newTreatmentPlan:
+        type: array
+        items:
+          $ref: '#/definitions/treatmentPlan'
+  treatmentPlan:
+    type: object
+    properties:
+      TreatmentId:
+        type: integer
+      Medicines:
+        type: array
+        items:
+          $ref: '#/definitions/Medicine'
+      enabledReminder:
+        type: boolean
+      doctorCreatedBy:
+        type: string
+      dateModifed:
+        type: string
+  Medicine:
+    type: object
+    properties:
+      MedicineName:
+        type: string
+      quantity:
+        type: integer
+      type:
+        type: string
+      location:
+        type: string
+      frequency:
+        type: string
+      duration:
+        type: integer
+  createTreatmentPlanFuncResponse:
+    type: string
+  enableReminderFuncResponse:
+    type: string
+  getActiveMedicinesResponse:
+    type: object
+    properties:
+      email:
+        type: string
+  Error:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string

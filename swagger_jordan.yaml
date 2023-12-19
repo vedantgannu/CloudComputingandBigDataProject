@@ -1,0 +1,109 @@
+swagger: '2.0'
+info:
+  title: The API for the Pharmacy APP
+  description: 'API to interact with the Pharmacy App Endpoints'
+  version: 1.0.0
+schemes:
+  - https
+basePath: /
+produces:
+  - application/json
+paths:
+  /userFunctionality:
+    post:
+      summary: userFunc endpoint
+      tags:
+        - USERS
+      operationId: usersFunc
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/userFuncRequest'
+      responses:
+        '200':
+          description: A people service Response
+          schema:
+            $ref: '#/definitions/userFuncResponse'
+        '403':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+definitions:
+  userFuncRequest:
+    type: object
+    properties:
+      userType:
+        type: string
+      userName:
+        type: string
+      email:
+        type: string
+      password:
+        type: string
+      phone:
+        type: string
+      address:
+        type: string
+      insuranceCompany:
+        type: string
+      insuranceNumber:
+        type: string
+      company:
+        type: string
+      patientList:
+        type: array
+        items:
+          $ref: '#/definitions/patient'
+  patient:
+    type: object
+    properties:
+      treatmentPlan:
+        $ref: '#/definitions/treatmentPlan'
+  treatmentPlan:
+    type: object
+    properties:
+      TreatmentId:
+        type: integer
+      Medicines:
+        type: array
+        items:
+          $ref: '#/definitions/Medicine'
+      enabledReminder:
+        type: boolean
+      doctorCreatedBy:
+        type: string
+      dateModifed:
+        type: string
+  Medicine:
+    type: object
+    properties:
+      MedicineName:
+        type: string
+      quantity:
+        type: integer
+      type:
+        type: string
+      location:
+        type: string
+      frequency:
+        type: string
+      duration:
+        type: integer
+  userFuncResponse:
+    type: string
+  Error:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
